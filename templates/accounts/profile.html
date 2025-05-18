@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Profile</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.username }}</h5>
+                <p class="card-text">Email: {{ user.email }}</p>
+                {% if user.studentprofile %}
+                    <p>Course: {{ user.studentprofile.course }}</p>
+                    <p>Branch: {{ user.studentprofile.branch }}</p>
+                    <p>Section: {{ user.studentprofile.section }}</p>
+                    <p>CGPA: {{ user.studentprofile.cgpa }}</p>
+                {% endif %}
+                <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
