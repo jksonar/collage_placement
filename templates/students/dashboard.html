@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Student Dashboard</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">Profile Information</div>
+                <div class="card-body">
+                    <h5>{{ student.user.get_full_name|default:student.user.username }}</h5>
+                    <p><strong>Course:</strong> {{ student.course }}</p>
+                    <p><strong>Branch:</strong> {{ student.branch }}</p>
+                    <p><strong>Section:</strong> {{ student.section }}</p>
+                    <p><strong>CGPA:</strong> {{ student.cgpa }}</p>
+                    <p><strong>Placement Status:</strong> {{ placement_status|title }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">Application Summary</div>
+                <div class="card-body">
+                    <p>You have applied to <strong>{{ applications_count }}</strong> companies.</p>
+                    <a href="{% url 'students:application_list' %}" class="btn btn-primary">View Applications</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Ongoing Opportunities</div>
+                <div class="card-body">
+                    {% if ongoing_companies %}
+                        <ul class="list-group">
+                            {% for company in ongoing_companies %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ company.name }} ({{ company.get_category_display }})
+                                    <a href="{% url 'students:apply_company' company.pk %}" class="btn btn-sm btn-outline-primary">Apply</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No ongoing opportunities available at the moment.</p>
+                    {% endif %}
+                    <a href="{% url 'students:company_list' %}" class="btn btn-primary mt-3">View All Companies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

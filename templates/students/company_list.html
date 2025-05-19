@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Available Companies</h1>
+    
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header">Filters</div>
+                <div class="card-body">
+                    <h5>Your Status</h5>
+                    <p>Placement Status: <strong>{{ student.get_placement_status_display }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% if companies %}
+                <div class="row">
+                    {% for company in companies %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">{{ company.name }}</h5>
+                                    <span class="badge bg-primary">{{ company.get_category_display }}</span>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Description:</strong> {{ company.description|truncatewords:30 }}</p>
+                                    <p><strong>Eligibility:</strong> {{ company.eligibility_criteria|truncatewords:20 }}</p>
+                                    <p><strong>Deadline:</strong> {{ company.application_deadline }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'students:apply_company' company.pk %}" class="btn btn-primary">Apply Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {% if student.placement_status == 'placed_twice' %}
+                        You are already placed in two companies and cannot apply for more.
+                    {% elif student.placement_status == 'placed' %}
+                        Based on your current placement, there are no eligible companies for you at this time.
+                    {% else %}
+                        There are no companies available at the moment.
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

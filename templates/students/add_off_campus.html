@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Add Off-Campus Application</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="company_name" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="company_name" name="company_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Position/Role</label>
+                    <input type="text" class="form-control" id="role" name="role" required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Application Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="Pending">Pending</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Application</button>
+                <a href="{% url 'students:off_campus_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

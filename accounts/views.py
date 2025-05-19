@@ -43,14 +43,18 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
+    try:
+        profile = request.user.studentprofile
+    except StudentProfile.DoesNotExist:
+        profile = StudentProfile.objects.create(user=request.user)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user.studentprofile)
+        form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
             return redirect('accounts:profile')
     else:
-        form = UserProfileForm(instance=request.user.studentprofile)
+        form = UserProfileForm(instance=profile)
     return render(request, 'accounts/edit_profile.html', {'form': form})
 
 @login_required
